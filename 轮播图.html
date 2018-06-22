@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			*{
+			margin:0;
+			padding: 0;
+			}
+			
+			#box{
+				width: 640px;
+				height: 320px;
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				margin:auto;
+			}
+			
+			#box ul li{
+				width: 640px;
+				height: 320px;
+				position: absolute;
+				list-style: none;
+				/*隐藏所有li,只让第一个li出现*/
+				display: none;
+			}
+			
+			.btn{
+				width: 30px;
+				height: 50px;
+				/*内部文字水平居中*/
+				text-align: center;
+				/*行高:当文字只有一行时,行高=元素高度,则文字垂直居中*/
+				line-height: 50px;
+				/*元素背景颜色*/
+				background: black;
+				/*元素内部文字颜色*/
+				color: white;
+				/*透明度*/
+				opacity: 0.4;
+				position: absolute;
+				/*设置垂直居中*/
+				top: 0;
+				bottom: 0;
+				margin: auto;
+				/*鼠标移上去时,箭头样式（pointer：手）*/
+				cursor: pointer;
+			}
+			
+			#right{
+				right: 0;
+			}
+			
+			.circles{
+				width: 100%;
+				height: 20px;
+				/*background: gray;*/
+				position: absolute;
+				bottom: 0;
+			}
+			
+			.circles span{
+				/*块级元素*/
+				display: block;
+				width: 10px;
+				height: 10px;
+				background: gray;
+				opacity: 0.4;
+				/*圆角属性:%50就变为圆形*/
+				border-radius: 50%;
+				float: left;
+				/*左外边距*/
+				margin-left: 10px;
+			}
+			
+			.current{
+				/*!important:将优先级提到最高*/
+				background: floralwhite!important;
+			}
+			
+		</style>
+		
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="box">
+			<ul>
+				<!--图片无法显示时，显示alt里的文字-->
+				<!--<li><img src="img/img6.jpg" alt="图片错误" /></li>-->
+				<li style="display: block;"><img src="img/img1.jpg" alt="" /></li>
+				<li><img src="img/img2.jpg" alt="" /></li>
+				<li><img src="img/img3.jpg" alt="" /></li>
+				<li><img src="img/img4.jpg" alt="" /></li>
+				<li><img src="img/img5.jpg" alt="" /></li>
+			</ul>
+			<div class="btn" id="left"><</div>
+			<div class="btn" id="right">></div>
+			<div class="circles">
+				<span class="current"></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>			
+			</div>
+		</div>
+		<script src="js/Jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			
+			var currentIndex=0;
+			var nextIndex=1;
+			var timer;
+			timer=setInterval(move,2000)
+			
+			$("#box").mouseover(function(){
+				clearInterval(timer)
+			})
+			
+			$("#box").mouseleave(function(){
+				timer=setInterval(move,2000)
+			})
+			
+//			找到元素,支持所有css选择器
+//			eq是找到对应的第几个元素
+//			fadeOut:淡出效果,参数是消失的时间
+//			move函数功能:当前图片淡出,下一张图片淡入
+			function move(){
+				$("li").eq(currentIndex).fadeOut(400);
+				$("li").eq(nextIndex).fadeIn(400);
+				$("span").eq(currentIndex).removeClass("current");
+				$("span").eq(nextIndex).addClass("current");
+				currentIndex=nextIndex;
+				nextIndex++;
+				if(nextIndex>4){
+					nextIndex=0;
+				}
+			}
+			
+			$("#right").click(function(){
+				move();
+			})
+			
+			$("#left").click(function(){
+				nextIndex=currentIndex-1;
+				if(nextIndex<0){
+					nextIndex=4;
+				}
+				move();
+			})
+			
+			$("span").mouseover(function(){
+//				在控制台看到序号
+//				console.log($(this).index())
+				nextIndex=$(this).index();
+				move();
+			})
+			
+		</script>
+	</body>
+</html>
